@@ -1,5 +1,10 @@
 from django.shortcuts import render
+from django.utils import timezone
+from .models import Post #We import Post model to be use im here
 
 # Create your views here.
 def post_list(request):
-    return render(request, 'blog/post_list.html', {})
+    # We create a variable named posts for our QuerySet
+    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    # We pass our QuerySet above to the template by assigning the querypost to the template as posts
+    return render(request, 'blog/post_list.html', {'posts' : posts})
